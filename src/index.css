@@ -1,4 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
-/* small helpers */
-html,body,#root { height: 100%; }
+:root {
+	--bg: #f4f6f9;
+	--text: #0f172a;
+	--brand-900: #09284b;
+	--brand-700: #11487f;
+	--brand-500: #1d71c1;
+	--accent: #ff8b1f;
+	--card: #ffffff;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	background:
+		radial-gradient(circle at 90% 12%, rgba(255, 139, 31, 0.09), transparent 35%),
+		radial-gradient(circle at 4% 0%, rgba(17, 72, 127, 0.12), transparent 34%),
+		var(--bg);
+	color: var(--text);
+	font-family: "Outfit", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-family: "Sora", sans-serif;
+	letter-spacing: -0.01em;
+}
+
+.glass-card {
+	background: rgba(255, 255, 255, 0.75);
+	border: 1px solid rgba(255, 255, 255, 0.75);
+	backdrop-filter: blur(10px);
+}
+
+.brand-gradient {
+	background: linear-gradient(120deg, var(--brand-900), var(--brand-700) 52%, var(--brand-500));
+}
+
+.section-shell {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+.soft-enter {
+	animation: soft-enter 650ms ease;
+}
+
+@keyframes soft-enter {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

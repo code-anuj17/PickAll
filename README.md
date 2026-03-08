@@ -1,134 +1,162 @@
-# 🚚 Vehicle Transport Booking Website
+# PickAll Transport Booking Web App
 
-A modern **vehicle transport booking platform** built with **React + TailwindCSS**.
-Users can request transport quotes, track shipments, and register/login to the platform.
+PickAll is a React + Vite web application for vehicle transport bookings. Users can request quotes, track shipments, contact support, register/login with Firebase Authentication, and manage their account details through a dashboard.
 
-This project is inspired by logistics platforms like **MyTransport** and demonstrates building a full responsive web interface using modern frontend technologies.
+## Current Functionality
 
----
+### Public Experience
 
-# 🌐 Features
+- Home, Services, Quote, Track, and Contact pages
+- Service cards include `Book Now` CTA that routes to `/get-a-quote`
+- Quote form submits using EmailJS and also stores tracking/quote records in Firestore
+- Contact form submits using EmailJS and stores leads in Firestore
+- Tracking page fetches live shipment status from Firestore using tracking ID
 
-* 🚗 Vehicle transport quote request form
-* 📦 Shipment tracking interface
-* 🔐 Login & Register pages
-* 📧 Quote form sends email using EmailJS
-* 📱 Fully responsive design
-* ⚡ Built using modern React architecture
-* 🧩 Reusable components for scalability
+### Authentication
 
----
+- Register/Login using Firebase Auth Email/Password
+- Email verification required before login
+- Resend verification flow from login page
+- Registration flow includes timeout handling and recreate-account edge-case handling
 
-# 🛠️ Tech Stack
+### User Dashboard (`/my-account/*`)
 
-Frontend
+- Route-based account sections:
+	- `/my-account/dashboard`
+	- `/my-account/orders`
+	- `/my-account/addresses`
+	- `/my-account/account-details`
+	- `/my-account/edit-address/billing`
+	- `/my-account/edit-address/shipping`
+- Orders list with collection compatibility (`order` and `orders`)
+- Address management (billing + shipping) with validation
+- Account details update (name/display name)
+- Password change with re-authentication
+- Account deletion flow with confirmation and cleanup
 
-* React (Vite)
-* TailwindCSS
-* React Router
-* EmailJS
+### Reliability and UX Hardening
 
-Development Tools
+- Timeout wrappers for network-sensitive operations
+- Firestore fallback messaging when writes are delayed/unavailable
+- Local account profile cache fallback for first/last/display/email
+- Compatibility support for both profile collections: `Users` and `users`
 
-* Node.js
-* Git & GitHub
-* VS Code
+## Tech Stack
 
----
+### Frontend
 
-# 📂 Project Structure
+- React (Vite)
+- React Router
+- TailwindCSS
 
+### Integrations
+
+- Firebase Authentication
+- Cloud Firestore
+- Firebase Analytics (optional toggle)
+- EmailJS
+
+### Tooling
+
+- Node.js + npm
+- Git + GitHub
+- VS Code
+
+## Project Structure
+
+```txt
+src/
+	components/
+		Footer.jsx
+		Hero.jsx
+		HowItWorks.jsx
+		Navbar.jsx
+		QuoteForm.jsx
+		Services.jsx
+		ServicesCard.jsx
+		Tracking.jsx
+	lib/
+		firebase.js
+	pages/
+		ContactPage.jsx
+		Home.jsx
+		Login.jsx
+		QuotePage.jsx
+		Register.jsx
+		ServicesPage.jsx
+		TrackPage.jsx
+		UserDashboard.jsx
+	App.jsx
+	App.css
+	index.css
+Firebase.js
 ```
-src
-│
-├── components
-│   ├── Navbar.jsx
-│   ├── Hero.jsx
-│   ├── Services.jsx
-│   ├── ServiceCard.jsx
-│   ├── HowItWorks.jsx
-│   ├── QuoteForm.jsx
-│   └── Footer.jsx
-│
-├── pages
-│   ├── Home.jsx
-│   ├── ServicesPage.jsx
-│   ├── QuotePage.jsx
-│   ├── TrackPage.jsx
-│   ├── Login.jsx
-│   └── Register.jsx
-│
-├── App.jsx
-├── main.jsx
-└── index.css
-```
 
----
+## Setup
 
-# ⚙️ Installation
-
-Clone the repository:
-
-```
-git clone https://github.com/YOUR_USERNAME/transport-booking-website.git
-```
-
-Navigate into the project:
-
-```
-cd transport-booking-website
-```
-
-Install dependencies:
-
-```
+```bash
 npm install
-```
-
-Run the development server:
-
-```
 npm run dev
 ```
 
----
+Production build:
 
-# 🔑 Environment Variables
-
-Create a `.env` file in the root directory.
-
-Example:
-
-```
-VITE_EMAIL_SERVICE=your_service_id
-VITE_EMAIL_TEMPLATE=your_template_id
-VITE_EMAIL_KEY=your_public_key
+```bash
+npm run build
 ```
 
-These are used for sending quote requests via **EmailJS**.
+## Environment Variables
 
----
+Create `.env` in project root and configure:
 
-# 📸 Screenshots
+```env
+# EmailJS
+VITE_EMAIL_SERVICE=your_emailjs_service_id
+VITE_EMAIL_TEMPLATE=your_quote_template_id
+VITE_CONTACT_TEMPLATE=your_contact_template_id
+VITE_EMAIL_KEY=your_emailjs_public_key
+VITE_ADMIN_EMAIL=support@example.com
 
-(Add screenshots of your UI here)
+# Firebase Web App Config
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
+VITE_FIREBASE_STORAGE_BUCKET=...
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+VITE_FIREBASE_APP_ID=...
+VITE_FIREBASE_MEASUREMENT_ID=...
 
-Example sections:
+# Feature Toggles
+VITE_ENABLE_FIRESTORE=true
+VITE_ENABLE_ANALYTICS=false
+```
 
-* Homepage
-* Quote Form
-* Login Page
-* Services Section
+Restart the dev server after updating `.env`.
 
----
+## Firebase Configuration Checklist
 
-# 🚀 Future Improvements
+1. Enable `Authentication -> Sign-in method -> Email/Password`.
+2. Create Firestore database with database id `(default)`.
+3. Add/publish Firestore rules compatible with your app flows.
+4. Ensure these collections are supported:
+	 - `Users`
+	 - `users`
+	 - `quoteRequests`
+	 - `tracking`
+	 - `contactLeads`
+	 - `order` and/or `orders`
 
-* OTP authentication using Firebase
-* User dashboard
-* Admin panel for quote management
-* Shipment tracking with map integration
-* Payment gateway integration
-* Backend API for bookings
+## Firestore Data Expectations
 
----
+- Profile docs use user UID as document ID in `Users`/`users`.
+- Addresses are stored inside profile doc as maps:
+	- `billingAddress`
+	- `shippingAddress`
+- `pincode` should be numeric in Firestore.
+- Quote/contact/tracking flows are designed to remain user-friendly even when Firestore writes are delayed.
+
+## Notes
+
+- If Firebase verification email is temporarily rate-limited after recreate-account, the app guides users to login and resend verification.
+- Dashboard and account operations are resilient to intermittent network delays.
+- Build status has been validated with `npm run build` after major changes.

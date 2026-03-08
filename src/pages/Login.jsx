@@ -1,70 +1,137 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 function Login() {
-
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
+  const [showResendVerification, setShowResendVerification] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setInfo("");
+    setShowResendVerification(false);
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const result = await signInWithEmailAndPassword(auth, normalizedEmail, password);
 
-    if(user && user.email === email && user.password === password){
-      alert("Login successful!");
+      if (!result.user.emailVerified) {
+        await signOut(auth);
+        setError("Email not verified. Check Inbox and Spam/Junk/Promotions, then verify before logging in.");
+        setShowResendVerification(true);
+        return;
+      }
+
       navigate("/");
-    }else{
-      alert("Invalid credentials");
+    } catch (err) {
+      const code = err?.code || "";
+      if (code === "auth/invalid-credential" || code === "auth/user-not-found" || code === "auth/wrong-password") {
+        setError("Invalid email or password.");
+      } else if (code === "auth/too-many-requests") {
+        setError("Too many failed attempts. Please wait a few minutes and try again.");
+      } else {
+        setError("Unable to sign in right now. Please try again.");
+      }
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    setError("");
+    setInfo("");
+
+    try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const result = await signInWithEmailAndPassword(auth, normalizedEmail, password);
+      await sendEmailVerification(result.user);
+      await signOut(auth);
+      setInfo("Verification email sent again. Please check Inbox and also Spam/Junk/Promotions.");
+    } catch (err) {
+      setError("Unable to resend verification email. Check your credentials and try again.");
+      console.error(err);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="section-shell flex min-h-[70vh] items-center justify-center py-12">
+      <div className="grid w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:grid-cols-2">
+        <aside className="brand-gradient hidden p-8 text-white md:block">
+          <h2 className="text-3xl font-bold">Welcome Back</h2>
+          <p className="mt-4 text-sm text-slate-100/85">Sign in to manage your quote requests and track active shipments.</p>
+        </aside>
 
-      <div className="bg-white shadow-xl rounded-xl p-8 w-[400px]">
+        <div className="p-8">
+          <h2 className="mb-6 text-2xl font-bold">Login</h2>
 
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Login
-        </h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg border border-slate-300 p-3"
+              required
+            />
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 p-3 pr-16"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-[var(--brand-700)]"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-            className="w-full border p-3 rounded"
-            required
-          />
+            <button disabled={loading} className="w-full rounded-lg bg-[var(--brand-700)] p-3 text-white hover:brightness-110 disabled:opacity-60">
+              {loading ? "Signing in..." : "Login"}
+            </button>
+            {error && <p className="text-sm text-red-600">{error}</p>}
+            {info && <p className="text-sm text-emerald-600">{info}</p>}
+            {showResendVerification && (
+              <button
+                type="button"
+                onClick={handleResendVerification}
+                className="w-full rounded-lg border border-[var(--brand-700)] p-3 text-sm font-medium text-[var(--brand-700)]"
+              >
+                Resend verification email
+              </button>
+            )}
+          </form>
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-            className="w-full border p-3 rounded"
-            required
-          />
-
-          <button className="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700">
-            Login
-          </button>
-
-        </form>
-
-        <p className="text-center mt-4 text-sm">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600">
-            Register
-          </Link>
-        </p>
-
+          <p className="mt-4 text-sm">
+            Don't have an account?{" "}
+            <Link to="/register" className="font-semibold text-[var(--brand-700)]">
+              Register
+            </Link>
+          </p>
+        </div>
       </div>
-
     </div>
   );
 }

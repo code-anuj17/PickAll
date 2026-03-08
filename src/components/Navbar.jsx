@@ -1,141 +1,150 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const [menuOpen,setMenuOpen] = useState(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
 
-  const navStyle = ({isActive}) =>
+    return () => unsubscribe();
+  }, []);
+
+  const navStyle = ({ isActive }) =>
     isActive
-      ? "text-blue-600 font-semibold"
-      : "text-gray-700 hover:text-blue-600";
+      ? "text-[var(--accent)] font-semibold"
+      : "text-slate-100/90 hover:text-white";
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+    setMenuOpen(false);
+  };
 
   return (
+    <header className="sticky top-0 z-50 shadow-lg">
+      <nav className="brand-gradient">
+        <div className="section-shell">
+          <div className="flex min-h-18 items-center justify-between py-2">
+            <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--accent)] text-sm font-extrabold text-slate-900">
+                PA
+              </div>
+              <span className="text-lg font-bold tracking-wide text-white">PickAll Movers</span>
+            </Link>
 
-    <nav className="bg-white shadow-md">
-
-      <div className="max-w-7xl mx-auto px-4">
-
-        <div className="flex justify-between items-center h-16">
-
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-blue-600 text-white w-9 h-9 flex items-center justify-center rounded-full font-bold">
-              MT
+            <div className="hidden items-center gap-7 md:flex">
+              <NavLink to="/" className={navStyle}>
+                Home
+              </NavLink>
+              <NavLink to="/services" className={navStyle}>
+                Services
+              </NavLink>
+              <NavLink to="/get-a-quote" className={navStyle}>
+                Get Quote
+              </NavLink>
+              <NavLink to="/track" className={navStyle}>
+                Track
+              </NavLink>
+              <NavLink to="/contact" className={navStyle}>
+                Contact
+              </NavLink>
             </div>
-            <span className="font-bold text-lg">
-              MyTransport
-            </span>
-          </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 items-center">
+            <div className="hidden items-center gap-3 md:flex">
+              {user ? (
+                <>
+                  <Link to="/my-account" className="text-sm text-slate-100/90 hover:text-white">
+                    My Account
+                  </Link>
+                  <span className="max-w-42 truncate text-sm text-slate-100/80">{user.email}</span>
+                  <button
+                    onClick={handleSignOut}
+                    className="rounded-lg border border-white/25 px-3 py-2 text-sm text-white hover:bg-white/10"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="text-sm text-slate-100/90 hover:text-white">
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-slate-900 transition hover:brightness-95"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
 
-            <NavLink to="/" className={navStyle}>
-              Home
-            </NavLink>
-
-            <NavLink to="/services" className={navStyle}>
-              Services
-            </NavLink>
-
-            <NavLink to="/get-a-quote" className={navStyle}>
-              Get Quote
-            </NavLink>
-
-            <NavLink to="/track" className={navStyle}>
-              Track
-            </NavLink>
-
-            <NavLink to="/contact" className={navStyle}>
-              Contact
-            </NavLink>
-
-          </div>
-
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-
-            <Link
-              to="/login"
-              className="text-gray-700 hover:text-blue-600"
+            <button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="rounded border border-white/30 px-3 py-2 text-white md:hidden"
+              aria-label="Open navigation menu"
             >
-              Login
-            </Link>
-
-            <Link
-              to="/register"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Register
-            </Link>
-
+              ☰
+            </button>
           </div>
-
-          {/* Mobile Button */}
-          <button
-            onClick={()=>setMenuOpen(!menuOpen)}
-            className="md:hidden text-gray-700"
-          >
-            ☰
-          </button>
-
         </div>
-
-      </div>
-
-      {/* Mobile Menu */}
-
-      {menuOpen && (
-
-        <div className="md:hidden bg-white border-t">
-
-          <div className="flex flex-col space-y-3 p-4">
-
-            <NavLink to="/" className={navStyle}>
-              Home
-            </NavLink>
-
-            <NavLink to="/services" className={navStyle}>
-              Services
-            </NavLink>
-
-            <NavLink to="/get-a-quote" className={navStyle}>
-              Get Quote
-            </NavLink>
-
-            <NavLink to="/track" className={navStyle}>
-              Track
-            </NavLink>
-
-            <NavLink to="/contact" className={navStyle}>
-              Contact
-            </NavLink>
-
-            <hr />
-
-            <Link
-              to="/login"
-              className="text-gray-700"
-            >
-              Login
-            </Link>
-
-            <Link
-              to="/register"
-              className="bg-blue-600 text-white px-4 py-2 rounded text-center"
-            >
-              Register
-            </Link>
-
+        {menuOpen && (
+          <div className="section-shell pb-4 md:hidden">
+            <div className="glass-card space-y-3 rounded-xl p-4 text-slate-900">
+              <NavLink to="/" className="block" onClick={closeMenu}>
+                Home
+              </NavLink>
+              <NavLink to="/services" className="block" onClick={closeMenu}>
+                Services
+              </NavLink>
+              <NavLink to="/get-a-quote" className="block" onClick={closeMenu}>
+                Get Quote
+              </NavLink>
+              <NavLink to="/track" className="block" onClick={closeMenu}>
+                Track
+              </NavLink>
+              <NavLink to="/contact" className="block" onClick={closeMenu}>
+                Contact
+              </NavLink>
+              <hr className="border-slate-300" />
+              {user ? (
+                <>
+                  <Link to="/my-account" onClick={closeMenu} className="block">
+                    My Account
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" onClick={closeMenu} className="block">
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={closeMenu}
+                    className="block rounded-lg bg-[var(--accent)] px-4 py-2 text-center text-sm font-semibold text-slate-900"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
-
-        </div>
-
-      )}
-
-    </nav>
-
+        )}
+      </nav>
+    </header>
   );
 }
 

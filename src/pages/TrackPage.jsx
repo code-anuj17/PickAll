@@ -2,11 +2,16 @@ import Tracking from "../components/Tracking";
 
 export default function TrackPage(){
   return (
-    <div className="py-12">
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-4">Track your vehicle</h2>
+    <section className="section-shell py-14">
+      <div className="mb-7">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-700)]">Live Status</p>
+        <h2 className="mt-2 text-4xl font-bold">Track Your Vehicle</h2>
+        <p className="mt-2 text-sm text-slate-600">Enter your shipment ID created during quote request.</p>
+      </div>
+
+      <div className="mx-auto max-w-4xl">
         <Tracking />
       </div>
-    </div>
+    </section>
   );
 }

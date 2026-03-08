@@ -1,13 +1,31 @@
 import ServicesCard from "../components/ServicesCard";
 
 export default function ServicesPage(){
+  const items = [
+    { title: "Car Transport", desc: "Open and covered carriers for hatchback, sedan, SUV and luxury cars.", icon: <span>🚗</span> },
+    { title: "Bike Transport", desc: "Secure bike packing and intercity transfer with careful loading.", icon: <span>🏍️</span> },
+    { title: "Scooter Relocation", desc: "Doorstep pickup and drop support for everyday two-wheelers.", icon: <span>🛵</span> },
+    { title: "Bulk Corporate Move", desc: "Fleet and employee relocation planning for organizations.", icon: <span>🏢</span> },
+    { title: "Expedited Delivery", desc: "Priority movement options for urgent transfer requirements.", icon: <span>⚡</span> },
+    { title: "Insurance Support", desc: "Transit safety checks and guidance for declared-value protection.", icon: <span>🛡️</span> },
+  ];
+
   return (
-    <section className="max-w-7xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold mb-6">Services</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <ServicesCard title="Car Transport" desc="Covered carriers & insurance." icon={<span>🚗</span>} />
-        <ServicesCard title="Bike Transport" desc="Safe folding & pickup." icon={<span>🏍️</span>} />
-        <ServicesCard title="Commercial Logistics" desc="Large vehicle shippers." icon={<span>🚚</span>} />
+    <section className="section-shell py-14">
+      <div className="mb-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-700)]">What We Offer</p>
+        <h2 className="mt-2 text-4xl font-bold">Transport Services</h2>
+        <p className="mt-3 max-w-3xl text-slate-600">From single-vehicle transfers to managed relocation programs, PickAll offers full transport support with route coordination and tracking visibility.</p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <ServicesCard key={item.title} {...item} />
+        ))}
+      </div>
+
+      <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-700">
+        Estimated delivery duration: most metro-to-metro routes complete in 2-6 days based on distance and carrier availability.
       </div>
     </section>
   );
