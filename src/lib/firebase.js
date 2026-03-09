@@ -1,7 +1,7 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore, initializeFirestore, setLogLevel } from "firebase/firestore";
-import { getAnalytics, isSupported } from "firebase/analytics";
+// import { getAnalytics, isSupported } from "firebase/analytics"; // Commented out to prevent loading errors
 
 const analyticsEnabled = import.meta.env.VITE_ENABLE_ANALYTICS === "true";
 const firestoreEnabled = import.meta.env.VITE_ENABLE_FIRESTORE === "true";
@@ -26,15 +26,19 @@ setLogLevel("error");
 
 let analytics = null;
 if (analyticsEnabled && typeof window !== "undefined") {
-  isSupported()
-    .then((ok) => {
-      if (ok) {
-        analytics = getAnalytics(app);
-      }
-    })
-    .catch(() => {
-      analytics = null;
-    });
+  import("firebase/analytics").then(({ getAnalytics, isSupported }) => {
+    isSupported()
+      .then((ok) => {
+        if (ok) {
+          analytics = getAnalytics(app);
+        }
+      })
+      .catch(() => {
+        analytics = null;
+      });
+  }).catch(() => {
+    analytics = null;
+  });
 }
 
 const auth = getAuth(app);

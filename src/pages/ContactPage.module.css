@@ -1,0 +1,17 @@
+.contact-submit-btn {
+  background: var(--brand-700);
+  border: 2px solid var(--brand-900);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  transition: background 0.2s, border 0.2s;
+}
+.contact-submit-btn:hover:not(:disabled) {
+  background: var(--brand-900);
+  border-color: var(--brand-700);
+}
+.contact-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
