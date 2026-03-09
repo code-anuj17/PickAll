@@ -43,6 +43,9 @@ function Navbar() {
               <NavLink to="/" className={navStyle}>
                 Home
               </NavLink>
+              <NavLink to="/about" className={navStyle}>
+                About Us
+              </NavLink>
               <NavLink to="/services" className={navStyle}>
                 Services
               </NavLink>
@@ -101,6 +104,9 @@ function Navbar() {
               <NavLink to="/" className="block" onClick={closeMenu}>
                 Home
               </NavLink>
+              <NavLink to="/about" className="block" onClick={closeMenu}>
+                About Us
+              </NavLink>
               <NavLink to="/services" className="block" onClick={closeMenu}>
                 Services
               </NavLink>
@@ -112,6 +118,9 @@ function Navbar() {
               </NavLink>
               <NavLink to="/contact" className="block" onClick={closeMenu}>
                 Contact
+              </NavLink>
+              <NavLink to="/faqs" className="block" onClick={closeMenu}>
+                FAQs
               </NavLink>
               <hr className="border-slate-300" />
               {user ? (
