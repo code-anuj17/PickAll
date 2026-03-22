@@ -14,6 +14,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserDashboard from "./pages/UserDashboard";
 import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
+import MarketplacePage from "./pages/MarketplacePage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/track" element={<TrackPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faqs" element={<FaqPage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         <Route path="/login" element={<Login />} />

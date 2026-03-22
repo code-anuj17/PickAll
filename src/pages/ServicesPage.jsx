@@ -4,10 +4,7 @@ export default function ServicesPage(){
   const items = [
     { title: "Car Transport", desc: "Open and covered carriers for hatchback, sedan, SUV and luxury cars.", icon: <span>🚗</span> },
     { title: "Bike Transport", desc: "Secure bike packing and intercity transfer with careful loading.", icon: <span>🏍️</span> },
-    { title: "Scooter Relocation", desc: "Doorstep pickup and drop support for everyday two-wheelers.", icon: <span>🛵</span> },
-    { title: "Bulk Corporate Move", desc: "Fleet and employee relocation planning for organizations.", icon: <span>🏢</span> },
-    { title: "Expedited Delivery", desc: "Priority movement options for urgent transfer requirements.", icon: <span>⚡</span> },
-    { title: "Insurance Support", desc: "Transit safety checks and guidance for declared-value protection.", icon: <span>🛡️</span> },
+    { title: "Other Transport", desc: "Custom transport solutions for other vehicle categories and special cases.", icon: <span>🚚</span> },
   ];
 
   return (

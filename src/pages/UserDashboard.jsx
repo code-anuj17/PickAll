@@ -550,6 +550,83 @@ export default function UserDashboard() {
       );
 
       if (db && firestoreEnabled) {
+        const cleanupCollections = ["loadAvailability", "truckAvailability"];
+        await Promise.all(
+          cleanupCollections.map(async (collectionName) => {
+            try {
+              const ownedByUidQuery = query(
+                collection(db, collectionName),
+                where("userId", "==", user.uid),
+                limit(200)
+              );
+
+              const ownedByEmailQuery = query(
+                collection(db, collectionName),
+                where("ownerEmail", "==", user.email || ""),
+                limit(200)
+              );
+
+              const [ownedByUidDocs, ownedByEmailDocs] = await Promise.all([
+                withTimeout(
+                  getDocs(ownedByUidQuery),
+                  10000,
+                  `Timed out while loading ${collectionName} for uid cleanup`
+                ),
+                withTimeout(
+                  getDocs(ownedByEmailQuery),
+                  10000,
+                  `Timed out while loading ${collectionName} for email cleanup`
+                ),
+              ]);
+
+              const deduped = new Map();
+              ownedByUidDocs.docs.forEach((item) => deduped.set(item.id, item));
+              ownedByEmailDocs.docs.forEach((item) => deduped.set(item.id, item));
+
+              await Promise.allSettled(
+                Array.from(deduped.values()).map((item) =>
+                  withTimeout(
+                    deleteDoc(doc(db, collectionName, item.id)),
+                    10000,
+                    `Timed out deleting ${collectionName} record`
+                  )
+                )
+              );
+            } catch (cleanupErr) {
+              console.warn(`Cleanup skipped for ${collectionName}:`, cleanupErr);
+            }
+
+            // Backward compatibility for older docs that only stored raw form email.
+            try {
+              const legacyField = collectionName === "loadAvailability" ? "email" : "email";
+              const legacyQuery = query(
+                collection(db, collectionName),
+                where(legacyField, "==", user.email || ""),
+                limit(200)
+              );
+              const legacyDocs = await withTimeout(
+                getDocs(legacyQuery),
+                10000,
+                `Timed out while loading ${collectionName} for legacy cleanup`
+              );
+
+              await Promise.allSettled(
+                legacyDocs.docs.map((item) =>
+                  withTimeout(
+                    deleteDoc(doc(db, collectionName, item.id)),
+                    10000,
+                    `Timed out deleting ${collectionName} record`
+                  )
+                )
+              );
+            } catch (cleanupErr) {
+              console.warn(`Legacy cleanup skipped for ${collectionName}:`, cleanupErr);
+            }
+          })
+        );
+      }
+
+      if (db && firestoreEnabled) {
         // Best-effort cleanup for user profile docs in both collection variants.
         await Promise.allSettled([
           withTimeout(deleteDoc(doc(db, USER_COLLECTION_PRIMARY, user.uid)), 10000, "Timed out deleting Users profile"),

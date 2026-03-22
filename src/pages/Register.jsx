@@ -22,6 +22,7 @@ function Register(){
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accountRole, setAccountRole] = useState("business");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -129,6 +130,12 @@ function Register(){
           firstName,
           lastName,
           email: normalizedEmail,
+          role: accountRole,
+          reportCount: 0,
+          warningCount: 0,
+          banned: false,
+          deletedByAdmin: false,
+          lastWarning: "",
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
         };
@@ -218,6 +225,32 @@ function Register(){
               <h2 className="mb-6 text-2xl font-bold">Register</h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <p className="mb-2 text-sm font-medium text-slate-700">Register as</p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 p-3 text-sm">
+                      <input
+                        type="radio"
+                        name="accountRole"
+                        value="business"
+                        checked={accountRole === "business"}
+                        onChange={(e) => setAccountRole(e.target.value)}
+                      />
+                      <span>Business</span>
+                    </label>
+                    <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-300 p-3 text-sm">
+                      <input
+                        type="radio"
+                        name="accountRole"
+                        value="truck-owner"
+                        checked={accountRole === "truck-owner"}
+                        onChange={(e) => setAccountRole(e.target.value)}
+                      />
+                      <span>Truck Owner</span>
+                    </label>
+                  </div>
+                </div>
+
                 <input
                   type="text"
                   placeholder="Full Name"

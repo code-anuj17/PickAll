@@ -2,6 +2,7 @@ import Hero from "../components/Hero";
 import HowItWorks from "../components/HowItWorks";
 import ServicesCard from "../components/ServicesCard";
 import QuoteForm from "../components/QuoteForm";
+import { Link } from "react-router-dom";
 
 export default function Home(){
   const services = [
@@ -16,9 +17,9 @@ export default function Home(){
       icon: <span>🏍️</span>,
     },
     {
-      title: "Household Add-ons",
-      desc: "Optional household parcel transfer during your vehicle relocation.",
-      icon: <span>📦</span>,
+      title: "Other Transport",
+      desc: "Support for other vehicle categories and custom transport requirements.",
+      icon: <span>🚚</span>,
     },
   ];
 
@@ -63,6 +64,33 @@ export default function Home(){
       </section>
 
       <HowItWorks />
+
+      <section className="section-shell py-14">
+        <div className="grid gap-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm lg:grid-cols-[1.2fr_1fr]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--brand-700)]">New Marketplace</p>
+            <h3 className="mt-2 text-3xl font-bold">Connect Business Loads with Truck Owners</h3>
+            <p className="mt-4 text-slate-600">
+              Businesses can post available loads and truck owners can post available trucks. You can act as the mediator and
+              quickly match both sides from one live marketplace.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            <Link
+              to="/marketplace"
+              className="rounded-xl border border-[var(--brand-700)] bg-slate-50 px-5 py-4 text-sm font-semibold text-[var(--brand-700)] transition hover:bg-slate-100"
+            >
+              Post Load Availability
+            </Link>
+            <Link
+              to="/marketplace"
+              className="rounded-xl bg-[var(--brand-700)] px-5 py-4 text-sm font-semibold text-white transition hover:brightness-95"
+            >
+              Post Truck Availability
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section className="section-shell py-14">
         <div className="grid gap-7 lg:grid-cols-[1.1fr_1fr]">

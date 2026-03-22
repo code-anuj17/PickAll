@@ -173,8 +173,7 @@ export default function QuoteForm(){
             <select name="vehicle" value={form.vehicle} onChange={handleChange} className="mt-1 w-full rounded-lg border border-slate-300 p-3 outline-none focus:border-[var(--brand-500)]">
               <option>Car</option>
               <option>Bike</option>
-              <option>Scooter</option>
-              <option>SUV</option>
+              <option>Other</option>
             </select>
           </div>
 

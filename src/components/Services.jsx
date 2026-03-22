@@ -13,8 +13,8 @@ function Services() {
       icon: "🏍️",
     },
     {
-      title: "Commercial Logistics",
-      desc: "Heavy vehicle and commercial transport solutions.",
+      title: "Other Transport",
+      desc: "Custom transport for all other vehicle and special-case requirements.",
       icon: "🚚",
     },
   ];

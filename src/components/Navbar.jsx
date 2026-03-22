@@ -6,6 +6,8 @@ import { auth } from "../lib/firebase";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const adminEmail = String(import.meta.env.VITE_ADMIN_EMAIL || "").trim().toLowerCase();
+  const isAdmin = Boolean(user?.email && adminEmail && user.email.toLowerCase() === adminEmail);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -49,6 +51,9 @@ function Navbar() {
               <NavLink to="/services" className={navStyle}>
                 Services
               </NavLink>
+              <NavLink to="/marketplace" className={navStyle}>
+                Marketplace
+              </NavLink>
               <NavLink to="/get-a-quote" className={navStyle}>
                 Get Quote
               </NavLink>
@@ -63,6 +68,11 @@ function Navbar() {
             <div className="hidden items-center gap-3 md:flex">
               {user ? (
                 <>
+                  {isAdmin && (
+                    <Link to="/admin" className="text-sm text-slate-100/90 hover:text-white">
+                      Admin
+                    </Link>
+                  )}
                   <Link to="/my-account" className="text-sm text-slate-100/90 hover:text-white">
                     My Account
                   </Link>
@@ -110,6 +120,9 @@ function Navbar() {
               <NavLink to="/services" className="block" onClick={closeMenu}>
                 Services
               </NavLink>
+              <NavLink to="/marketplace" className="block" onClick={closeMenu}>
+                Marketplace
+              </NavLink>
               <NavLink to="/get-a-quote" className="block" onClick={closeMenu}>
                 Get Quote
               </NavLink>
@@ -125,6 +138,11 @@ function Navbar() {
               <hr className="border-slate-300" />
               {user ? (
                 <>
+                  {isAdmin && (
+                    <Link to="/admin" onClick={closeMenu} className="block">
+                      Admin Panel
+                    </Link>
+                  )}
                   <Link to="/my-account" onClick={closeMenu} className="block">
                     My Account
                   </Link>
