@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
+import brandLogo from "../assets/logo3.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,9 +36,7 @@ function Navbar() {
         <div className="section-shell">
           <div className="flex min-h-18 items-center justify-between py-2">
             <Link to="/" className="flex items-center gap-3" onClick={closeMenu}>
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--accent)] text-sm font-extrabold text-slate-900">
-                PA
-              </div>
+              <img src={brandLogo} alt="PickAll Logistics" className="h-12 w-12 shrink-0 object-contain" />
               <span className="text-lg font-bold tracking-wide text-white">PickAll Logistics</span>
             </Link>
 

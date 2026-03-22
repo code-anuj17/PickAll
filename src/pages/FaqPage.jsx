@@ -29,7 +29,7 @@ export default function FaqPage() {
     {
       question: "What fleet and hardware setup do you currently run?",
       answer:
-        "We operate a starting fleet of 5 carriers, including double-decker fully covered containerized trailers built for automobile movement combinations.",
+        "We operate a dedicated fleet, including double-decker fully covered containerized trailers built for automobile movement combinations.",
     },
     {
       question: "What are your current strengths and performance highlights?",

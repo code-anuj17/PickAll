@@ -22,7 +22,7 @@ export default function ServicesPage(){
       </div>
 
       <div className="mt-10 rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-700">
-        Operational highlights: 99% on-time delivery, 99% safe transportation record, dedicated starting fleet of 5 trailers, and expansion plan for 75 new trailers over the next 3 financial years.
+        Operational highlights include strong on-time performance, a safe transportation record, a dedicated trailer fleet, and an ongoing expansion plan for additional trailers over the coming financial years.
       </div>
     </section>
   );

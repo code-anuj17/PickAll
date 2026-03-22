@@ -49,27 +49,9 @@ export default function AboutPage() {
             </p>
 
             <p className="mt-5 text-slate-700 leading-relaxed">
-              Our current operations support clients like Tata Rewire and Resustainability Limited with a starting fleet of 5 carriers. We employ strict GPS-based tracking, observer route checks, and a hands-on management model to ensure safe and timely delivery performance.
+              Our current operations support clients like Tata Rewire and Resustainability Limited with a dedicated carrier network. We employ strict GPS-based tracking, observer route checks, and a hands-on management model to ensure safe and timely delivery performance.
             </p>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-2xl font-bold text-[var(--brand-700)]">5</div>
-                <div className="mt-1 text-sm text-slate-600">Starting Carriers</div>
-              </div>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-2xl font-bold text-[var(--brand-700)]">99%</div>
-                <div className="mt-1 text-sm text-slate-600">On-time Delivery</div>
-              </div>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-2xl font-bold text-[var(--brand-700)]">99%</div>
-                <div className="mt-1 text-sm text-slate-600">Safe Transport</div>
-              </div>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-2xl font-bold text-[var(--brand-700)]">8</div>
-                <div className="mt-1 text-sm text-slate-600">Employees</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

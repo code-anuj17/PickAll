@@ -89,7 +89,6 @@ src/
 	App.jsx
 	App.css
 	index.css
-Firebase.js
 ```
 
 ## Setup

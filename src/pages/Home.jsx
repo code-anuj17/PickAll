@@ -42,27 +42,6 @@ export default function Home(){
         </div>
       </section>
 
-      <section className="section-shell pb-4">
-        <div className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-7 md:grid-cols-4">
-          <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">5</div>
-            <div className="text-sm text-slate-600">Starting Fleet</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">8</div>
-            <div className="text-sm text-slate-600">Team Members</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">99%</div>
-            <div className="text-sm text-slate-600">Safe Transport</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">99%</div>
-            <div className="text-sm text-slate-600">On-time Deliveries</div>
-          </div>
-        </div>
-      </section>
-
       <HowItWorks />
 
       <section className="section-shell py-14">
