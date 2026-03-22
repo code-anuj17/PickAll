@@ -2,146 +2,149 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
-    function isAuthenticated() {
+    function signedIn() {
       return request.auth != null;
     }
 
+    function authEmail() {
+      return signedIn() && request.auth.token.email != null
+        ? request.auth.token.email
+        : "";
+    }
+
     function isAdmin() {
-      return request.auth.token.email == 'logisticspickall@gmail.com';
+      return signedIn() && authEmail() == "logisticspickall@gmail.com";
     }
 
-    function getUserEmail() {
-      return request.auth.token.email;
+    function isSelf(userId) {
+      return signedIn() && request.auth.uid == userId;
     }
 
-    function getUserId() {
-      return request.auth.uid;
+    function hasRole(expectedRole) {
+      return signedIn() && (
+        (exists(/databases/$(database)/documents/Users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/Users/$(request.auth.uid)).data.role == expectedRole) ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == expectedRole)
+      );
     }
 
-    function isOwnPost(creatorId, creatorEmail) {
-      return getUserId() == creatorId || 
-             getUserEmail() == creatorEmail;
+    function isMarketplaceOwner() {
+      return signedIn() && (
+        (resource.data.userId is string && resource.data.userId == request.auth.uid) ||
+        (request.auth.token.email != null &&
+          resource.data.ownerEmail is string &&
+          resource.data.ownerEmail == request.auth.token.email) ||
+        (request.auth.token.email != null &&
+          resource.data.email is string &&
+          resource.data.email == request.auth.token.email)
+      );
     }
 
-    // Load Availability Posts
-    match /loadAvailability/{document=**} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated() && 
-        (resource.data.userId == getUserId() || isAdmin());
-    }
-
-    // Truck Availability Posts
-    match /truckAvailability/{document=**} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated() && 
-        (resource.data.userId == getUserId() || isAdmin());
-    }
-
-    // Load Post Reports - Anyone can report, admin can moderate
-    match /loadPostReports/{document=**} {
-      allow create: if isAuthenticated() && 
-        request.resource.data.reporterUserId == getUserId() &&
-        request.resource.data.reporterUserId != request.resource.data.reportedUserId;
-      allow read: if isAuthenticated() && 
-        (isAdmin() || request.auth.uid == resource.data.reporterUserId);
-      allow update, delete: if isAdmin();
-    }
-
-    // Truck Post Reports - Anyone can report, admin can moderate
-    match /truckPostReports/{document=**} {
-      allow create: if isAuthenticated() && 
-        request.resource.data.reporterUserId == getUserId() &&
-        request.resource.data.reporterUserId != request.resource.data.reportedUserId;
-      allow read: if isAuthenticated() && 
-        (isAdmin() || request.auth.uid == resource.data.reporterUserId);
-      allow update, delete: if isAdmin();
-    }
-
-    // User Profiles (Users collection)
-    match /Users/{userId} {
-      allow read: if isAuthenticated();
-      allow update: if isAuthenticated() && 
-        (userId == getUserId() || isAdmin());
-      allow create: if isAuthenticated() && userId == getUserId();
-      allow delete: if isAdmin();
-    }
-
-    // User Profiles (users collection - fallback)
+    // ---------- user profiles ----------
     match /users/{userId} {
-      allow read: if isAuthenticated();
-      allow update: if isAuthenticated() && 
-        (userId == getUserId() || isAdmin());
-      allow create: if isAuthenticated() && userId == getUserId();
-      allow delete: if isAdmin();
+      allow read: if isSelf(userId) || isAdmin();
+      allow create: if isSelf(userId);
+      allow update, delete: if isSelf(userId) || isAdmin();
     }
 
-    // Load Availability (alternative collection)
-    match /Loads/{document=**} {
-      allow read: if isAuthenticated();
-      allow create, update, delete: if isAuthenticated();
+    match /Users/{userId} {
+      allow read: if isSelf(userId) || isAdmin();
+      allow create: if isSelf(userId);
+      allow update, delete: if isSelf(userId) || isAdmin();
     }
 
-    // Truck Availability (alternative collection)
-    match /Trucks/{document=**} {
-      allow read: if isAuthenticated();
-      allow create, update, delete: if isAuthenticated();
-    }
-
-    // Quote Requests
-    match /quoteRequests/{document=**} {
-      allow create: if isAuthenticated();
-      allow read, update, delete: if isAuthenticated() && 
-        (resource.data.userId == getUserId() || isAdmin());
-    }
-
-    // Contact Leads
-    match /contactLeads/{document=**} {
+    // ---------- public forms ----------
+    match /quoteRequests/{docId} {
       allow create: if true;
-      allow read: if isAdmin();
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    match /contactLeads/{leadId} {
+      allow create: if true;
+      allow read, delete: if isAdmin();
+      allow update: if false;
+    }
+
+    // ---------- tracking ----------
+    match /tracking/{trackId} {
+      allow create: if true;
+      allow get: if true;
+      allow list: if isAdmin();
       allow update, delete: if isAdmin();
     }
 
-    // Tracking
-    match /tracking/{document=**} {
-      allow read: if isAuthenticated();
-      allow create, update: if isAuthenticated();
-      allow delete: if isAdmin();
+    // ---------- orders ----------
+    match /orders/{orderId} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if (signedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow update, delete: if isAdmin();
     }
 
-    // Orders
-    match /orders/{document=**} {
-      allow read, create, update: if isAuthenticated();
-      allow delete: if isAdmin();
+    match /order/{orderId} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read: if (signedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      allow update, delete: if isAdmin();
     }
 
-    // Order (singular)
-    match /order/{document=**} {
-      allow read, create, update: if isAuthenticated();
-      allow delete: if isAdmin();
+    // ---------- marketplace ----------
+    match /loadAvailability/{docId} {
+      allow read: if true;
+
+      allow create: if
+        signedIn() &&
+        hasRole("business") &&
+        request.resource.data.role == "business" &&
+        request.resource.data.status == "open" &&
+        request.resource.data.userId == request.auth.uid &&
+        (
+          !("ownerEmail" in request.resource.data) ||
+          request.resource.data.ownerEmail == authEmail()
+        );
+
+      allow update, delete: if isMarketplaceOwner() || isAdmin();
     }
 
-    // Load Post Availability (alternative)
-    match /loadPostAvailability/{document=**} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated() && 
-        (resource.data.userId == getUserId() || isAdmin());
+    match /truckAvailability/{docId} {
+      allow read: if true;
+
+      allow create: if
+        signedIn() &&
+        hasRole("truck-owner") &&
+        request.resource.data.role == "truck-owner" &&
+        request.resource.data.status == "open" &&
+        request.resource.data.userId == request.auth.uid &&
+        (
+          !("ownerEmail" in request.resource.data) ||
+          request.resource.data.ownerEmail == authEmail()
+        );
+
+      allow update, delete: if isMarketplaceOwner() || isAdmin();
     }
 
-    // Truck Availability (alternative)
-    match /truckPostAvailability/{document=**} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAuthenticated() && 
-        (resource.data.userId == getUserId() || isAdmin());
-    }
+    // ---------- fake-load reports ----------
+    match /loadPostReports/{reportId} {
+      // reporter can create report, but never against self
+      allow create: if
+        signedIn() &&
+        request.resource.data.reporterUserId == request.auth.uid &&
+        (
+          !("reportedUserId" in request.resource.data) ||
+          request.resource.data.reportedUserId != request.auth.uid
+        ) &&
+        (
+          !("ownerEmail" in request.resource.data) ||
+          request.resource.data.ownerEmail != authEmail()
+        );
 
-    // Deny all other access
-    match /{document=**} {
-      allow read, write: if false;
+      // reporter can read own reports; admin can read all
+      allow read: if isAdmin() || (
+        signedIn() && resource.data.reporterUserId == request.auth.uid
+      );
+
+      // admin-only moderation on report docs
+      allow update, delete: if isAdmin();
     }
   }
 }
