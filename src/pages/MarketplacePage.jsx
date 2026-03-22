@@ -19,7 +19,9 @@ const USER_COLLECTION_FALLBACK = "users";
 const EMAIL_SERVICE_ID =
   import.meta.env.VITE_MARKETPLACE_EMAIL_SERVICE ||
   import.meta.env.VITE_EMAIL_SERVICE;
-const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_KEY;
+const EMAIL_PUBLIC_KEY =
+  import.meta.env.VITE_MARKETPLACE_EMAIL_KEY ||
+  import.meta.env.VITE_EMAIL_KEY;
 const LOAD_TEMPLATE_ID =
   import.meta.env.VITE_MARKETPLACE_LOAD_TEMPLATE ||
   import.meta.env.VITE_EMAIL_TEMPLATE;
