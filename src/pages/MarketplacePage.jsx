@@ -39,6 +39,15 @@ function normalize(value) {
   return String(value || "").trim().toLowerCase();
 }
 
+function isOwnedByCurrentUser(post, currentUser) {
+  if (!post || !currentUser) return false;
+  if (post.userId && currentUser.uid && post.userId === currentUser.uid) return true;
+
+  const ownerEmail = normalize(post.ownerEmail || post.email);
+  const currentEmail = normalize(currentUser.email);
+  return Boolean(ownerEmail && currentEmail && ownerEmail === currentEmail);
+}
+
 function formatDate(value) {
   if (!value) return "Flexible";
   const date = new Date(value);
@@ -384,11 +393,7 @@ export default function MarketplacePage() {
       setError("Please login to report fake load posts.");
       return;
     }
-    if (!post.userId) {
-      setError("This legacy post cannot be reported automatically. Contact support.");
-      return;
-    }
-    if (post.userId === user.uid) {
+    if (isOwnedByCurrentUser(post, user)) {
       setError("You cannot report your own load post.");
       return;
     }
@@ -406,53 +411,59 @@ export default function MarketplacePage() {
         return;
       }
 
-      const [ownerPrimarySnap, ownerFallbackSnap] = await Promise.all([
-        getDoc(doc(db, USER_COLLECTION_PRIMARY, post.userId)),
-        getDoc(doc(db, USER_COLLECTION_FALLBACK, post.userId)),
-      ]);
-
-      const ownerData = ownerPrimarySnap.exists()
-        ? ownerPrimarySnap.data()
-        : ownerFallbackSnap.exists()
-          ? ownerFallbackSnap.data()
-          : null;
-
-      if (!ownerData) {
-        setError("Unable to locate post owner profile for reporting.");
-        return;
-      }
-
-      const nextCount = Number(ownerData.reportCount || 0) + 1;
-      const shouldBan = nextCount >= REPORT_THRESHOLD;
-      const warning = shouldBan
-        ? "Account banned: received 3 or more fake-load reports."
-        : `Warning ${nextCount}/${REPORT_THRESHOLD}: fake-load report received.`;
-
       await setDoc(reportRef, {
         postId: post.id,
-        reportedUserId: post.userId,
+        reportedUserId: post.userId || "",
         reporterUserId: user.uid,
         reporterEmail: user.email || "",
         ownerEmail: post.ownerEmail || "",
         reason: "fake-load",
+        postSummary: `${post.pickupCity || "-"} to ${post.dropCity || "-"}`,
+        status: "open",
         createdAt: serverTimestamp(),
       });
+      setNotice("Report submitted successfully. Admin review has been queued.");
 
-      const moderationPayload = {
-        reportCount: nextCount,
-        warningCount: Math.min(nextCount, REPORT_THRESHOLD),
-        banned: shouldBan,
-        lastWarning: warning,
-        banReason: shouldBan ? "3 fake-load reports" : "",
-        updatedAt: serverTimestamp(),
-      };
+      // Best-effort moderation sync: if rules block cross-user updates,
+      // keep the report saved and let admin panel action the report.
+      if (post.userId) {
+        try {
+          const [ownerPrimarySnap, ownerFallbackSnap] = await Promise.all([
+            getDoc(doc(db, USER_COLLECTION_PRIMARY, post.userId)),
+            getDoc(doc(db, USER_COLLECTION_FALLBACK, post.userId)),
+          ]);
 
-      await Promise.all([
-        setDoc(doc(db, USER_COLLECTION_PRIMARY, post.userId), moderationPayload, { merge: true }),
-        setDoc(doc(db, USER_COLLECTION_FALLBACK, post.userId), moderationPayload, { merge: true }),
-      ]);
+          const ownerData = ownerPrimarySnap.exists()
+            ? ownerPrimarySnap.data()
+            : ownerFallbackSnap.exists()
+              ? ownerFallbackSnap.data()
+              : null;
 
-      setNotice("Report submitted. Our system has warned this user and applied moderation policy.");
+          if (ownerData) {
+            const nextCount = Number(ownerData.reportCount || 0) + 1;
+            const shouldBan = nextCount >= REPORT_THRESHOLD;
+            const warning = shouldBan
+              ? "Account banned: received 3 or more fake-load reports."
+              : `Warning ${nextCount}/${REPORT_THRESHOLD}: fake-load report received.`;
+
+            const moderationPayload = {
+              reportCount: nextCount,
+              warningCount: Math.min(nextCount, REPORT_THRESHOLD),
+              banned: shouldBan,
+              lastWarning: warning,
+              banReason: shouldBan ? "3 fake-load reports" : "",
+              updatedAt: serverTimestamp(),
+            };
+
+            await Promise.all([
+              setDoc(doc(db, USER_COLLECTION_PRIMARY, post.userId), moderationPayload, { merge: true }),
+              setDoc(doc(db, USER_COLLECTION_FALLBACK, post.userId), moderationPayload, { merge: true }),
+            ]);
+          }
+        } catch (moderationErr) {
+          console.warn("Report saved but moderation profile sync failed:", moderationErr);
+        }
+      }
     } catch (reportErr) {
       console.error("Failed to report fake load:", reportErr);
       setError("Could not submit report right now. Try again.");
@@ -642,7 +653,7 @@ export default function MarketplacePage() {
                       <div className="mt-2">
                         <button
                           onClick={() => handleReportFakeLoad(post)}
-                          disabled={!user || reportingPostId === post.id || post.userId === user?.uid}
+                          disabled={!user || reportingPostId === post.id || isOwnedByCurrentUser(post, user)}
                           className="rounded border border-red-300 px-3 py-1 text-xs font-medium text-red-700 disabled:opacity-60"
                         >
                           {reportingPostId === post.id ? "Reporting..." : "Report Fake Load"}

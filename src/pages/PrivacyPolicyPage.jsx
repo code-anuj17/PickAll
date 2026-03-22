@@ -26,10 +26,10 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6">1. Introduction</h2>
           <p className="mb-4">
-            Welcome to <span className="font-semibold">PickAll Movers</span>.
+            Welcome to <span className="font-semibold">PICKALL LOGISTICS PRIVATE LIMITED</span>.
           </p>
           <p className="mb-6">
-            <span className="font-semibold">PickAll Movers</span> ("us", "we", or "our") operates <span className="font-semibold">pickall.in</span> (hereinafter referred to as "<span className="font-semibold">Service</span>").
+            <span className="font-semibold">PICKALL LOGISTICS PRIVATE LIMITED</span> ("us", "we", or "our") operates <span className="font-semibold">pickall.in</span> (hereinafter referred to as "<span className="font-semibold">Service</span>").
           </p>
           <p className="mb-6">
             Our Privacy Policy governs your visit to <span className="font-semibold">pickall.in</span>, and explains how we collect, safeguard and disclose information that results from your use of our Service.
@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
           <div className="space-y-4 mb-8">
             <div>
               <p className="font-semibold">SERVICE</p>
-              <p>The PickAll Movers website and all related services, features, and functionality.</p>
+              <p>The PICKALL LOGISTICS PRIVATE LIMITED website and all related services, features, and functionality.</p>
             </div>
             <div>
               <p className="font-semibold">PERSONAL DATA</p>
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">4. Use of Data</h2>
-          <p className="mb-4">PickAll uses the collected data for various purposes:</p>
+          <p className="mb-4">PICKALL LOGISTICS PRIVATE LIMITED uses the collected data for various purposes:</p>
           <ul className="list-disc pl-6 mb-8 space-y-2">
             <li>To provide and maintain our Service</li>
             <li>To notify you about changes to our Service</li>
@@ -99,8 +99,8 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">6. Contact Us</h2>
           <p className="mb-4">If you have any questions about this Privacy Policy, please contact us at:</p>
-          <p className="font-semibold">PickAll Movers</p>
-          <p>Email: {import.meta.env.VITE_ADMIN_EMAIL || "support@pickall.in"}</p>
+          <p className="font-semibold">PICKALL LOGISTICS PRIVATE LIMITED</p>
+          <p>Email: Info@pickalllogistics.com</p>
           <p className="text-sm text-slate-600 mt-8">Last updated: March 9, 2024</p>
         </div>
       </section>

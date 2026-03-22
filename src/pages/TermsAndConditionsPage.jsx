@@ -26,10 +26,10 @@ export default function TermsAndConditionsPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6">1. Introduction</h2>
           <p className="mb-6">
-            Welcome to <span className="font-semibold">PickAll Movers</span> ("us", "we", or "our").
+            Welcome to <span className="font-semibold">PICKALL LOGISTICS PRIVATE LIMITED</span> ("us", "we", or "our").
           </p>
           <p className="mb-6">
-            These Terms and Conditions govern your use of <span className="font-semibold">pickall.in</span> and all related services, features, and functionality (hereinafter referred to as the "<span className="font-semibold">Service</span>").
+            These Terms and Conditions govern your use of <span className="font-semibold">pickall.in</span> and all related logistics services, features, and functionality (hereinafter referred to as the "<span className="font-semibold">Service</span>").
           </p>
           <p className="mb-6">
             By accessing or using our Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
@@ -39,7 +39,7 @@ export default function TermsAndConditionsPage() {
           <div className="space-y-4 mb-8">
             <div>
               <p className="font-semibold">SERVICE</p>
-              <p>The PickAll Movers website and all related services, features, and functionality.</p>
+              <p>The PICKALL LOGISTICS PRIVATE LIMITED website and all related services, features, and functionality.</p>
             </div>
             <div>
               <p className="font-semibold">USER</p>
@@ -47,7 +47,7 @@ export default function TermsAndConditionsPage() {
             </div>
             <div>
               <p className="font-semibold">VEHICLE TRANSPORTATION SERVICES</p>
-              <p>The car, bike, and other vehicle transportation services provided by PickAll Movers.</p>
+              <p>The outbound automobile logistics and land transport support services provided by PICKALL LOGISTICS PRIVATE LIMITED.</p>
             </div>
             <div>
               <p className="font-semibold">CONTENT</p>
@@ -57,15 +57,14 @@ export default function TermsAndConditionsPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">3. Service Description</h2>
           <p className="mb-6">
-            PickAll Movers provides vehicle transportation services across India, including but not limited to:
+            PICKALL LOGISTICS PRIVATE LIMITED provides land transport support services across India, including but not limited to:
           </p>
           <ul className="list-disc pl-6 mb-8 space-y-2">
-            <li>Car transportation (hatchback, sedan, SUV, luxury vehicles)</li>
-            <li>Bike and scooter transportation</li>
+            <li>Outbound auto logistics movement</li>
+            <li>Covered carrier and trailer-based transport support</li>
             <li>Corporate fleet relocation</li>
-            <li>Doorstep pickup and delivery</li>
-            <li>Real-time shipment tracking</li>
-            <li>Insurance coverage</li>
+            <li>Real-time GPS shipment tracking</li>
+            <li>Observer-based route movement checks</li>
           </ul>
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">4. User Accounts</h2>
@@ -130,7 +129,7 @@ export default function TermsAndConditionsPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">8. Intellectual Property</h2>
           <p className="mb-6">
-            The Service and its original content, features, and functionality are and will remain the exclusive property of PickAll Movers and its licensors. The Service is protected by copyright, trademark, and other laws.
+            The Service and its original content, features, and functionality are and will remain the exclusive property of PICKALL LOGISTICS PRIVATE LIMITED and its licensors. The Service is protected by copyright, trademark, and other laws.
           </p>
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">9. Termination</h2>
@@ -143,7 +142,7 @@ export default function TermsAndConditionsPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">10. Limitation of Liability</h2>
           <p className="mb-6">
-            In no event shall PickAll Movers, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses.
+            In no event shall PICKALL LOGISTICS PRIVATE LIMITED, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses.
           </p>
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">11. Governing Law</h2>
@@ -158,8 +157,8 @@ export default function TermsAndConditionsPage() {
 
           <h2 className="text-2xl font-bold text-slate-900 mb-6 mt-10">13. Contact Information</h2>
           <p className="mb-4">If you have any questions about these Terms and Conditions, please contact us at:</p>
-          <p className="font-semibold">PickAll Movers</p>
-          <p>Email: {import.meta.env.VITE_ADMIN_EMAIL || "support@pickall.in"}</p>
+          <p className="font-semibold">PICKALL LOGISTICS PRIVATE LIMITED</p>
+          <p>Email: Info@pickalllogistics.com</p>
           <p className="text-sm text-slate-600 mt-8">Last updated: March 9, 2024</p>
         </div>
       </section>

@@ -38,7 +38,7 @@ function Navbar() {
               <div className="grid h-10 w-10 place-items-center rounded-full bg-[var(--accent)] text-sm font-extrabold text-slate-900">
                 PA
               </div>
-              <span className="text-lg font-bold tracking-wide text-white">PickAll Movers</span>
+              <span className="text-lg font-bold tracking-wide text-white">PickAll Logistics</span>
             </Link>
 
             <div className="hidden items-center gap-7 md:flex">

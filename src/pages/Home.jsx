@@ -8,17 +8,17 @@ export default function Home(){
   const services = [
     {
       title: "Car Transport",
-      desc: "Covered and open carrier options with doorstep pickup and delivery.",
+      desc: "Double-decker covered carrier movement for cars with safety-first handling.",
       icon: <span>🚗</span>,
     },
     {
       title: "Bike Transport",
-      desc: "Safe bike packing with dedicated loading and unloading handling.",
+      desc: "Dedicated bike and two-wheeler outbound movement with secure loading.",
       icon: <span>🏍️</span>,
     },
     {
       title: "Other Transport",
-      desc: "Support for other vehicle categories and custom transport requirements.",
+      desc: "Custom land-transport support activities for automobile logistics clients.",
       icon: <span>🚚</span>,
     },
   ];
@@ -45,19 +45,19 @@ export default function Home(){
       <section className="section-shell pb-4">
         <div className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-7 md:grid-cols-4">
           <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">10k+</div>
-            <div className="text-sm text-slate-600">Vehicle Moves</div>
+            <div className="text-3xl font-bold text-[var(--brand-700)]">5</div>
+            <div className="text-sm text-slate-600">Starting Fleet</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">500+</div>
-            <div className="text-sm text-slate-600">Route Coverage</div>
+            <div className="text-3xl font-bold text-[var(--brand-700)]">8</div>
+            <div className="text-sm text-slate-600">Team Members</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">24/7</div>
-            <div className="text-sm text-slate-600">Tracking Support</div>
+            <div className="text-3xl font-bold text-[var(--brand-700)]">99%</div>
+            <div className="text-sm text-slate-600">Safe Transport</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-[var(--brand-700)]">98%</div>
+            <div className="text-3xl font-bold text-[var(--brand-700)]">99%</div>
             <div className="text-sm text-slate-600">On-time Deliveries</div>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Home(){
             <h3 className="mt-2 text-3xl font-bold">Connect Business Loads with Truck Owners</h3>
             <p className="mt-4 text-slate-600">
               Businesses can post available loads and truck owners can post available trucks. You can act as the mediator and
-              quickly match both sides from one live marketplace.
+              manage both sides through one live platform with status controls and fraud moderation.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">

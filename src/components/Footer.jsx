@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
 
 export default function Footer(){
   return (
@@ -11,32 +12,35 @@ export default function Footer(){
               <div className="h-8 w-8 rounded-full bg-[var(--brand-700)] flex items-center justify-center text-white font-bold text-sm">
                 PA
               </div>
-              <span className="font-bold text-lg tracking-wide text-white">PickAll Movers</span>
+              <span className="font-bold text-lg tracking-wide text-white">PickAll Logistics Pvt Ltd</span>
             </div>
             <p className="text-sm text-slate-100/85 mb-6 leading-relaxed">
-              At PickAll Movers, we serve as your portal to the world of efficient vehicle logistics. Explore our comprehensive services and discover tailored solutions for your transportation needs.
+              PICKALL LOGISTICS PRIVATE LIMITED provides dedicated land transport support activities with a strong focus on safe, on-time and damage-free delivery across India.
             </p>
             <div className="space-y-3">
-              <p className="text-sm text-slate-700">
-                <span className="font-semibold">✉</span> {import.meta.env.VITE_ADMIN_EMAIL || "support@pickall.in"}
+              <p className="text-sm text-slate-100/90">
+                <span className="font-semibold">✉</span> Info@pickalllogistics.com
               </p>
-              <p className="text-sm text-slate-700">
-                <span className="font-semibold">📱</span> +91-8274341234
+              <p className="text-sm text-slate-100/90">
+                <span className="font-semibold">📱</span> +91-9024885287, +91-9950721565
+              </p>
+              <p className="text-sm text-slate-100/90">
+                <span className="font-semibold">📍</span> PNO 238, Mahal Vistar, Pratap Nagar, Jaipur - 302033
               </p>
             </div>
             {/* Social Icons */}
             <div className="flex gap-3 mt-6">
-              <a href="#" className="h-9 w-9 rounded-full bg-[var(--brand-700)] text-white flex items-center justify-center hover:bg-[var(--brand-900)] transition">
-                f
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-full text-white flex items-center justify-center transition" style={{ backgroundColor: "#1877F2" }}>
+                <Facebook size={20} />
               </a>
-              <a href="#" className="h-9 w-9 rounded-full bg-[var(--brand-700)] text-white flex items-center justify-center hover:bg-[var(--brand-900)] transition">
-                📷
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-full text-white flex items-center justify-center transition" style={{ background: "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)" }}>
+                <Instagram size={20} />
               </a>
-              <a href="#" className="h-9 w-9 rounded-full bg-[var(--brand-700)] text-white flex items-center justify-center hover:bg-[var(--brand-900)] transition">
-                ▶
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-full text-white flex items-center justify-center transition" style={{ backgroundColor: "#FF0000" }}>
+                <Youtube size={20} />
               </a>
-              <a href="#" className="h-9 w-9 rounded-full bg-[var(--brand-700)] text-white flex items-center justify-center hover:bg-[var(--brand-900)] transition">
-                in
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-full text-white flex items-center justify-center transition" style={{ backgroundColor: "#0A66C2" }}>
+                <Linkedin size={20} />
               </a>
             </div>
           </div>
@@ -67,7 +71,7 @@ export default function Footer(){
 
       {/* Copyright */}
       <div className="border-t border-white/20 py-6 text-center text-sm text-slate-100/80">
-        © {new Date().getFullYear()} PickAll Movers. All Rights Reserved.
+        © {new Date().getFullYear()} PICKALL LOGISTICS PRIVATE LIMITED. All Rights Reserved.
       </div>
     </footer>
   );

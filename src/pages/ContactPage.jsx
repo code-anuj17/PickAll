@@ -102,10 +102,12 @@ export default function ContactPage(){
         <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] mt-8">
           <aside className="brand-gradient rounded-2xl p-8 text-white">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-200">Need Help?</p>
-            <h2 className="mt-2 text-4xl font-bold">Contact PickAll Team</h2>
-            <p className="mt-4 text-sm text-slate-100/85">For relocation planning, route questions and bulk bookings, write to us and we will respond quickly.</p>
-            <div className="mt-8 rounded-xl bg-white/10 p-4 text-sm">
-              Email: {import.meta.env.VITE_ADMIN_EMAIL || "support@pickall.in"}
+            <h2 className="mt-2 text-4xl font-bold">Contact PICKALL LOGISTICS</h2>
+            <p className="mt-4 text-sm text-slate-100/85">For outbound auto logistics, fleet movement planning, and partner onboarding, connect with our Jaipur office team.</p>
+            <div className="mt-8 space-y-2 rounded-xl bg-white/10 p-4 text-sm">
+              <p>Email: Info@pickalllogistics.com</p>
+              <p>Mobile: +91-9024885287, +91-9950721565</p>
+              <p>Address: PNO 238, Mahal Vistar, Sanganer, Pratap Nagar Housing Board, Jaipur, Rajasthan 302033</p>
             </div>
           </aside>
 

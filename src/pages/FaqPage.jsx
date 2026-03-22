@@ -7,44 +7,44 @@ export default function FaqPage() {
 
   const faqs = [
     {
-      question: "What types of vehicles do you transport?",
+      question: "What does PICKALL LOGISTICS PRIVATE LIMITED specialize in?",
       answer:
-        "We specialize in transporting cars, bikes, scooters, and can handle bulk corporate fleet relocations. We offer both open and covered carrier options depending on your vehicle type and protection needs.",
+        "We specialize in service activities incidental to land transportation, especially outbound auto logistics and transport support operations for automobile consignments.",
     },
     {
-      question: "How do I request a transportation quote?",
+      question: "How can I request transport support or onboarding?",
       answer:
-        "Simply visit our Get Instant Quote page, fill in pickup and drop locations along with vehicle details. You'll receive a quoted price and delivery timeline within minutes.",
+        "Use our website quote/contact forms with pickup, destination, and vehicle details. Our operations team reviews requests and coordinates movement plans directly.",
     },
     {
-      question: "What areas do you provide vehicle transportation services to?",
+      question: "Where is your company based and where do you operate?",
       answer:
-        "PickAll operates across major metro cities and intercity routes throughout India. We can handle pickups and deliveries from Delhi, Mumbai, Bangalore, Hyderabad, Chennai, and many other cities nationwide.",
+        "Our registered office is in Jaipur, Rajasthan, and we handle consignment movement across India depending on client requirements and route planning.",
     },
     {
-      question: "Is my vehicle insured during transportation?",
+      question: "How do you ensure shipment safety?",
       answer:
-        "Yes, all vehicles are covered with transit insurance. We provide comprehensive protection during pickup, transit, and delivery. You can declare the vehicle value for additional coverage if needed.",
+        "We follow strict tracking arrangements using hi-tech GPS systems and maintain observer checks for en-route movement. Safety and damage-free delivery are core operational priorities.",
     },
     {
-      question: "Do you offer both domestic and international transportation services?",
+      question: "What fleet and hardware setup do you currently run?",
       answer:
-        "Currently, we specialize in domestic transportation across India. International shipping services are available for high-value and specialty vehicles upon request with advance planning.",
+        "We operate a starting fleet of 5 carriers, including double-decker fully covered containerized trailers built for automobile movement combinations.",
     },
     {
-      question: "What sets your company apart from other logistics providers?",
+      question: "What are your current strengths and performance highlights?",
       answer:
-        "PickAll combines 24/7 live support, transparent pricing, real-time tracking, 98% on-time delivery, and verified carrier networks. We handle over 10,000+ vehicle moves annually with proven reliability.",
+        "Our profile highlights include 99% on-time delivery, 99% safe transportation record, strict movement monitoring, and direct involvement by management in day-to-day operations.",
     },
     {
-      question: "How can I track the status of my transported vehicle?",
+      question: "Can clients track consignments in real time?",
       answer:
-        "You can track your shipment in real-time through our Track Shipment feature. Just enter your tracking ID to see live location updates, estimated delivery time, and contact your assigned handler.",
+        "Yes. GPS-based tracking is available and can be shared with customers through internet/API-based visibility where enabled.",
     },
     {
-      question: "What is the typical delivery timeline?",
+      question: "What is your future expansion plan?",
       answer:
-        "Most metro-to-metro routes complete in 2-6 days based on distance and carrier availability. Expedited delivery options are available for urgent requests with priority handling.",
+        "We plan to acquire up to 75 additional trailers over the next three financial years based on customer demand and route expansion needs.",
     },
   ];
 

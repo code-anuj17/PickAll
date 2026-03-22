@@ -259,9 +259,33 @@ export default function AdminPage() {
         });
       });
 
-      const rows = Array.from(merged.values()).sort((a, b) => {
-        const aCount = Number(a.reportCount || 0);
-        const bCount = Number(b.reportCount || 0);
+      const reportsSnap = await getDocs(collection(db, REPORT_COLLECTION));
+      const reportCountByUserId = {};
+      const reportCountByEmail = {};
+
+      reportsSnap.docs.forEach((item) => {
+        const data = item.data() || {};
+        const uid = String(data.reportedUserId || "").trim();
+        const ownerEmail = String(data.ownerEmail || "").trim().toLowerCase();
+        if (uid) {
+          reportCountByUserId[uid] = (reportCountByUserId[uid] || 0) + 1;
+        }
+        if (ownerEmail) {
+          reportCountByEmail[ownerEmail] = (reportCountByEmail[ownerEmail] || 0) + 1;
+        }
+      });
+
+      const rows = Array.from(merged.values()).map((row) => {
+        const emailKey = String(row.email || "").trim().toLowerCase();
+        const calculated = (reportCountByUserId[row.uid] || 0) + (reportCountByEmail[emailKey] || 0);
+        const profileCount = Number(row.reportCount || 0);
+        return {
+          ...row,
+          effectiveReportCount: Math.max(profileCount, calculated),
+        };
+      }).sort((a, b) => {
+        const aCount = Number(a.effectiveReportCount || 0);
+        const bCount = Number(b.effectiveReportCount || 0);
         return bCount - aCount;
       });
 
@@ -746,7 +770,7 @@ export default function AdminPage() {
                         <td className="p-3 font-medium">{row.uid}</td>
                         <td className="p-3">{row.email || "-"}</td>
                         <td className="p-3">{row.role || "-"}</td>
-                        <td className="p-3">{Number(row.reportCount || 0)}</td>
+                        <td className="p-3">{Number(row.effectiveReportCount || 0)}</td>
                         <td className="p-3">{row.lastWarning || "-"}</td>
                         <td className="p-3">
                           {isDeleted ? (
