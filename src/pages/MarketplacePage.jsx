@@ -407,7 +407,7 @@ export default function MarketplacePage() {
       const reportRef = doc(db, "loadPostReports", reportId);
       const existing = await getDoc(reportRef);
       if (existing.exists()) {
-        setError("You already reported this load post.");
+        setError("You already reported this load post. Our team is reviewing it.");
         return;
       }
 
@@ -422,7 +422,7 @@ export default function MarketplacePage() {
         status: "open",
         createdAt: serverTimestamp(),
       });
-      setNotice("Report submitted successfully. Admin review has been queued.");
+      setNotice("Report submitted successfully. Our team will review this within 24 hours.");
 
       // Best-effort moderation sync: if rules block cross-user updates,
       // keep the report saved and let admin panel action the report.
@@ -466,14 +466,9 @@ export default function MarketplacePage() {
       }
     } catch (reportErr) {
       console.error("Failed to report fake load:", reportErr);
-      // Provide specific error messages
-      if (reportErr.code === 'permission-denied') {
-        setError("Permission denied. Please ensure you're logged in. If the issue persists, contact support.");
-      } else if (reportErr.message?.includes('loadPostReports')) {
-        setError("Report system temporarily unavailable. Please try again in a few moments.");
-      } else {
-        setError("Could not submit report right now. Try again.");
-      }
+      setError(
+        "Could not submit report right now. If this issue persists, please use the Contact Us form to report the fake load."
+      );
     } finally {
       setReportingPostId("");
     }

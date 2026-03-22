@@ -405,7 +405,7 @@ export default function AdminPage() {
 
   async function deleteUserAppData(targetUser) {
     const ok = window.confirm(
-      `Delete user app data for ${targetUser.email || targetUser.uid}? This will ban account, remove profile data and user posts.`
+      `Permanently delete account for ${targetUser.email || targetUser.uid}? This will remove all profile data, marketplace posts, and reports. This cannot be undone.`
     );
     if (!ok) return;
 
@@ -415,29 +415,10 @@ export default function AdminPage() {
     setNotice("");
 
     try {
+      // Delete user profile from both collection variants
       await Promise.all([
-        setDoc(
-          doc(db, USER_COLLECTION_PRIMARY, targetUser.uid),
-          {
-            banned: true,
-            deletedByAdmin: true,
-            banReason: "Deleted by admin (fraud)",
-            lastWarning: "Account blocked and removed by admin due to fraud.",
-            updatedAt: serverTimestamp(),
-          },
-          { merge: true }
-        ),
-        setDoc(
-          doc(db, USER_COLLECTION_FALLBACK, targetUser.uid),
-          {
-            banned: true,
-            deletedByAdmin: true,
-            banReason: "Deleted by admin (fraud)",
-            lastWarning: "Account blocked and removed by admin due to fraud.",
-            updatedAt: serverTimestamp(),
-          },
-          { merge: true }
-        ),
+        deleteDoc(doc(db, USER_COLLECTION_PRIMARY, targetUser.uid)),
+        deleteDoc(doc(db, USER_COLLECTION_FALLBACK, targetUser.uid)),
       ]);
 
       const removedCounts = await Promise.all([
@@ -450,12 +431,12 @@ export default function AdminPage() {
       ]);
 
       setNotice(
-        `User app data removed for ${targetUser.uid}. Deleted docs: ${removedCounts.reduce((a, b) => a + b, 0)}.`
+        `User account permanently deleted for ${targetUser.uid}. Removed ${removedCounts.reduce((a, b) => a + b, 0)} associated records.`
       );
       await refreshAll();
     } catch (removeErr) {
-      console.error("Failed to delete user app data:", removeErr);
-      setError("Unable to remove user app data. Please check Firestore rules.");
+      console.error("Failed to delete user account:", removeErr);
+      setError("Unable to delete user account. Please check Firestore rules.");
     } finally {
       setBusyUserKey("");
     }

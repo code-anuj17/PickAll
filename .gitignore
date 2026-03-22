@@ -26,6 +26,3 @@ node_modules
 dist
 .env
 Company Profile 2025.pdf
-
-# Generated Firestore rules (use firestore.rules.template + npm run generate-rules)
-firestore.rules
