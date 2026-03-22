@@ -466,7 +466,14 @@ export default function MarketplacePage() {
       }
     } catch (reportErr) {
       console.error("Failed to report fake load:", reportErr);
-      setError("Could not submit report right now. Try again.");
+      // Provide specific error messages
+      if (reportErr.code === 'permission-denied') {
+        setError("Permission denied. Please ensure you're logged in. If the issue persists, contact support.");
+      } else if (reportErr.message?.includes('loadPostReports')) {
+        setError("Report system temporarily unavailable. Please try again in a few moments.");
+      } else {
+        setError("Could not submit report right now. Try again.");
+      }
     } finally {
       setReportingPostId("");
     }
